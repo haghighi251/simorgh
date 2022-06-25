@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="Amir Haghighi">
+        <meta name="generator" content="Symfony shop">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+            {{ encore_entry_script_tags('amir') }}
+        {% endblock %}
+    </head>
+    <body class="{{ body_class_name }}">
+        {% block body %}{% endblock %}
+        {% block footer %}{% endblock %}
+    </body>
+</html>

@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{page_title}}{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+        .form-signin {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .form-signin .checkbox {
+            font-weight: 400;
+        }
+
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <main class="form-signin">
+        {% if error %}
+            <div class="alert alert-warning">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+        <form action="{{ path('login') }}" method="post">
+            <img class="mb-4" src="{{ asset('build/images/logo.png') }}" alt="{{page_title}}" width="72" height="57">
+            <h1 class="h3 mb-3 fw-normal">{% trans from 'messages'  into lang%}Please sign in{% endtrans %}</h1>
+
+            <div class="form-floating">
+                <input type="email" class="form-control" id="username" name="_username" value="{{ last_username }}" placeholder="name@example.com">
+                <label for="floatingInput">{% trans from 'messages'  into lang%}Email address{% endtrans %}</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="password" name="_password" placeholder="{% trans from 'messages'  into lang%}Password{% endtrans %}">
+                <label for="floatingPassword">{% trans from 'messages'  into lang%}Password{% endtrans %}</label>
+            </div>
+
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me"> {% trans from 'messages'  into lang%}Remember me{% endtrans %}
+                </label>
+            </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <button class="w-100 btn btn-lg btn-primary" type="submit">{% trans from 'messages'  into lang%}Sign in{% endtrans %}</button>
+            <div class="row mt-3">
+                <div class="col-12"><a href="{{ path('app_authentication_register') }}">{% trans from 'messages'  into lang%}Register{% endtrans %}</a></div>
+                <div class="col-12"><a>{% trans from 'messages'  into lang%}Forget password{% endtrans %}</a></div>
+            </div>
+            <p class="mt-5 mb-3 text-muted">&copy; 2021–{{ current_year }}</p>
+        </form>
+    </main>
+{% endblock %}
