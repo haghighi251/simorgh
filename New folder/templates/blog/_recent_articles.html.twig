@@ -1,8 +1,0 @@
-{# templates/blog/_recent_articles.html.twig #}
-{% for article in articles %}
-    <p>
-        <a href="{{ path('blog_show', {slug: article.slug}) }}">
-        {{ article.title }}
-    </a>
-    </p>
-{% endfor %}
