@@ -10,7 +10,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class IndexController extends AbstractController {
 
     /**
-     * @Route("/index", name="app_index")
+     * @Route("/", name="app_index")
      */
     public function index(TranslatorInterface $translator): Response {
         // usually you'll want to make sure the user is authenticated first,

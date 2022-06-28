@@ -2,32 +2,32 @@
 
 namespace App\Repository;
 
-use App\Entity\Categories;
+use App\Entity\ContentsMeta;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Categories>
+ * @extends ServiceEntityRepository<ContentsMeta>
  *
- * @method Categories|null find($id, $lockMode = null, $lockVersion = null)
- * @method Categories|null findOneBy(array $criteria, array $orderBy = null)
- * @method Categories[]    findAll()
- * @method Categories[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ContentsMeta|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ContentsMeta|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ContentsMeta[]    findAll()
+ * @method ContentsMeta[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CategoriesRepository extends ServiceEntityRepository
+class ContentsMetaRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Categories::class);
+        parent::__construct($registry, ContentsMeta::class);
     }
 
     /**
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add(Categories $entity, bool $flush = true): void
+    public function add(ContentsMeta $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
         if ($flush) {
@@ -39,7 +39,7 @@ class CategoriesRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(Categories $entity, bool $flush = true): void
+    public function remove(ContentsMeta $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
         if ($flush) {
@@ -48,21 +48,9 @@ class CategoriesRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Categories[] Returns an array of Categories objects
+    //  * @return ContentsMeta[] Returns an array of ContentsMeta objects
     //  */
-    
-    public function getAllparent(){
-        return $this->findBy(['level'=>[1,2]]);
-    }
-    
-    public function getAllShopCategories(){
-        return $this->findBy(['type'=>'shop']);
-    }
-    
-    public function getAllTagsCategories(){
-        return $this->findBy(['type'=>'tag']);
-    }
-    
+    /*
     public function findByExampleField($value)
     {
         return $this->createQueryBuilder('c')
@@ -74,10 +62,10 @@ class CategoriesRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    
+    */
 
     /*
-    public function findOneBySomeField($value): ?Categories
+    public function findOneBySomeField($value): ?ContentsMeta
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')

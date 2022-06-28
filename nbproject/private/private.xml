@@ -2,11 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/amir/Desktop/symfony/symfony_test/src/Controller/Admin/CategoriesCrudController.php</file>
-            <file>file:/C:/Users/amir/Desktop/symfony/symfony_test/src/Controller/Admin/ContentsCrudController.php</file>
-            <file>file:/C:/Users/amir/Desktop/symfony/symfony_test/src/Repository/CategoriesRepository.php</file>
-            <file>file:/C:/Users/amir/Desktop/symfony/symfony_test/src/Entity/Contents.php</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

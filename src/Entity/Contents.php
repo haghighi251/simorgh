@@ -81,6 +81,37 @@ class Contents
      */
     private $category_id;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
+
+    public $ShortContent;
+
+    public $Categories;
+
+    public $Tags;
+
+    public $Price;
+
+    public $DiscountedPrice;
+
+    public $WeightDimension;
+
+    public $Weight;
+
+    public $LengthDimension;
+
+    public $Length;
+
+public $StockStatus;
+
+public $ProductCount;
+
+public $Note;
+
+
+
     public function __construct()
     {
         $this->comment_count = new ArrayCollection();
@@ -265,4 +296,45 @@ class Contents
 
         return $this;
     }
+    
+    public function getCategories(){}
+
+    public function getTags(){}
+
+    public function getPrice(){}
+
+    public function getDiscountedPrice(){}
+
+    public function getWeightDimension(){}
+
+    public function getWeight(){}
+
+    public function getLengthDimension(){}
+
+    public function getLength(){}
+
+    public function getStockStatus(){}
+
+    public function getProductCount(){}
+
+    public function getNote(){}
+
+    public function getShortContent(){}
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\OneToMany (targetEntity="Attachment", mappedBy="content", cascade={"persist", "remove"})
+     */
+    public $attachments;
 }

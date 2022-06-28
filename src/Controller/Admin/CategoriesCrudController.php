@@ -52,15 +52,14 @@ class CategoriesCrudController extends AbstractCrudController {
                 $parent_array[$c->name] = $c->id;
             }
         }
+
         return [
             TextField::new('name'),
             TextEditorField::new('description'),
             ChoiceField::new('type')->setChoices(['shop' => 'shop', 'blog' => 'blog', 'tag' => 'tag']),
-//            ArrayField::new('parent'),
             ChoiceField::new('parent')->setChoices($parent_array),
             ChoiceField::new('level')->setChoices(['Root' => 1, 'Child' => 2, 'Sub Child' => 3]),
             TextField::new('slug'),
-//            AssociationField::new('parent')->autocomplete(),    
         ];
     }
 
@@ -72,7 +71,6 @@ class CategoriesCrudController extends AbstractCrudController {
     
      public function configureActions(Actions $actions): Actions
     {
-
         return $actions
             ->setPermission(Action::NEW, 'ROLE_ADMIN')
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')
