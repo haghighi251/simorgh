@@ -8,4 +8,4 @@ vich_uploader:
     mappings:
             attachments:
                 uri_prefix: /images/attachments
-                upload_destination: '%kernel.project_dir%/public/images/attachments'
+                upload_destination: '%kernel.project_dir%/public/uploads/images/attachments'

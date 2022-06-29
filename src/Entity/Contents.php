@@ -7,9 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Categories;
+//use App\Entity\Attachment;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=ContentsRepository::class)
+ * @Vich\Uploadable
  */
 class Contents
 {
@@ -28,7 +32,7 @@ class Contents
     /**
      * @ORM\Column(type="text")
      */
-    private $content;
+    public $content;
 
     /**
      * @ORM\ManyToOne(targetEntity=Users::class)
@@ -83,8 +87,9 @@ class Contents
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
      */
-    private $image;
+    public $content_image;
 
     public $ShortContent;
 
@@ -104,18 +109,22 @@ class Contents
 
     public $Length;
 
-public $StockStatus;
+    public $StockStatus;
 
-public $ProductCount;
+    public $ProductCount;
 
-public $Note;
+    public $Note;
 
-
+    /**
+     * @ORM\OneToMany(targetEntity=Attachment::class, mappedBy="contents",cascade={"persist", "remove"})
+     */
+    private $attachments;
 
     public function __construct()
     {
         $this->comment_count = new ArrayCollection();
         $this->category_id = new ArrayCollection();
+        $this->attachments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -273,6 +282,18 @@ public $Note;
         return $this;
     }
 
+    public function getImage(): ?string
+    {
+        return $this->content_image;
+    }
+
+    public function setImage(?string $content_image): self
+    {
+        $this->content_image = $content_image;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, Categories>
      */
@@ -321,20 +342,35 @@ public $Note;
 
     public function getShortContent(){}
 
-    public function getImage(): ?string
+    /**
+     * @return Collection<int, Attachment>
+     */
+    public function getAttachments(): Collection
     {
-        return $this->image;
+        return $this->attachments;
     }
 
-    public function setImage(?string $image): self
+    public function addAttachment(Attachment $attachment): self
     {
-        $this->image = $image;
+        if (!$this->attachments->contains($attachment)) {
+            $this->attachments[] = $attachment;
+            $attachment->setContents($this);
+        }
 
         return $this;
     }
 
-    /**
-     * @ORM\OneToMany (targetEntity="Attachment", mappedBy="content", cascade={"persist", "remove"})
-     */
-    public $attachments;
+    public function removeAttachment(Attachment $attachment): self
+    {
+        if ($this->attachments->removeElement($attachment)) {
+            // set the owning side to null (unless already changed)
+            if ($attachment->getContents() === $this) {
+                $attachment->setContents(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }

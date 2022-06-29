@@ -18,6 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\Request;
+use App\Entity\Attachment;
 
 class ContentsCrudController extends AbstractCrudController
 {
@@ -76,9 +77,9 @@ class ContentsCrudController extends AbstractCrudController
             ),
             TextEditorField::new('ShortContent','Short Content (Maximum 150 characters)'),
             TextEditorField::new('content','Long Content'),
-            ImageField::new('image','Product Image')
-                ->setUploadDir('/public/uploads/images/')
-                ->setUploadedFileNamePattern('[year]/[month]/[day]/[slug]-[contenthash].[extension]'),
+            ImageField::new('content_image','Product Image')
+                ->setUploadDir('/public/uploads/images')
+                ->setUploadedFileNamePattern('[slug]-[contenthash].[extension]'),
             CollectionField::new('attachments','More Images')
                 ->setEntryType(AttachmentType::class)
                 ->onlyOnForms(),
@@ -112,17 +113,19 @@ class ContentsCrudController extends AbstractCrudController
         $entity = parent::createEntity($entityFqcn);
         $content = new Contents();
         $request = $this->get('request_stack')->getCurrentRequest();
-//var_dump($request->files->get('Contents')['image']['file']->get('filename'));
-        dd($request->files->get('Contents')['image']['file']);
-        $user_info = $this->tokenStorage->getToken()->getUser();
 
-        $content->setAuthor($user_info);
-        $content->setTitle($request->request->get('Contents')['title']);
+        if(null !== $request->request->get('Contents')){
+            //var_dump($request->files->get('Contents')['image']['file']->get('filename'));
+            //dd($request->files->get('Contents')['image']['file']);
+            $user_info = $this->tokenStorage->getToken()->getUser();
+            $content->setAuthor($user_info);
+            $attachments = new Attachment();
 
-        return $content;
-        //$category = new Categories();
-        //$category->setCreateAt(\DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s')));
-        //return $category;
+
+            //$content->setTitle($request->request->get('Contents')['title']);
+
+            return $content;
+        }
     }
 
 

@@ -4,11 +4,12 @@ namespace App\Entity;
 
 use App\Repository\AttachmentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=AttachmentRepository::class)
- *
+ * @Vich\Uploadable
  */
 class Attachment
 {
@@ -25,11 +26,6 @@ class Attachment
     private $image;
 
     /**
-     * @Vich\UploadableField(mapping="attachments", fileNameProperty="image")
-     */
-    private $imageFile;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $created_at;
@@ -40,14 +36,15 @@ class Attachment
     private $updated_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity=contents::class, inversedBy="attachments")
+     * @ORM\ManyToOne(targetEntity=Contents::class, inversedBy="attachments")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $content;
+    private $contents;
 
-    public function __construct(){
-        $this->created_at = new \DateTime();
-        $this->updated_at = new \DateTime();
-    }
+    /**
+     * @Vich\UploadableField(mapping="attachments", fileNameProperty="image")
+     */
+    private $imageFile;
 
     public function getId(): ?int
     {
@@ -90,16 +87,21 @@ class Attachment
         return $this;
     }
 
-    public function getContent(): ?contents
+    public function getContents(): ?Contents
     {
-        return $this->content;
+        return $this->contents;
     }
 
-    public function setContent(?contents $content): self
+    public function setContents(?Contents $contents): self
     {
-        $this->content = $content;
+        $this->contents = $contents;
 
         return $this;
+    }
+
+    public function __construct(){
+        $this->created_at = new \DateTime();
+        $this->updated_at = new \DateTime();
     }
 
     /**
@@ -110,8 +112,7 @@ class Attachment
     }
 
     /**
-     * @param $imageFile
-     * @return void
+     * @param mixed $imageFile
      * @throws \Exception
      */
     public function setImageFile($imageFile): void{
