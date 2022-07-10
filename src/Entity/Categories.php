@@ -3,12 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\CategoriesRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=CategoriesRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\CategoriesRepository")
  */
 class Categories
 {
@@ -61,13 +62,16 @@ class Categories
     private $updated_at;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Contents::class, mappedBy="category_id")
+     * @ORM\ManyToMany(targetEntity=Post::class, mappedBy="categories")
+     *
      */
-    private $content;
+    private $post;
+
 
     public function __construct()
     {
-        $this->content = new ArrayCollection();
+       // $this->contents = new ArrayCollection();
+        $this->post = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -147,54 +151,84 @@ class Categories
         return $this;
     }
 
-    public function getCreateAt(): ?\DateTimeInterface
+    public function getCreateAt(): ?DateTimeInterface
     {
         return $this->create_at;
     }
 
-    public function setCreateAt(\DateTimeInterface $create_at): self
+    public function setCreateAt(DateTimeInterface $create_at): self
     {
         $this->create_at = $create_at;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
+    public function setUpdatedAt(?DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
 
         return $this;
     }
 
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
+
+
     /**
-     * @return Collection<int, Contents>
+     * Return all Post associated to the category.
+     *
+     * @return Post[]
      */
-    public function getContent(): Collection
+    public function getPost()
     {
-        return $this->content;
+        return $this->post;
     }
 
-    public function addContent(Contents $content): self
+    /**
+     * Set all Post in the category.
+     *
+     * @param Post[] $Post
+     */
+    public function setPosts($Post)
     {
-        if (!$this->content->contains($content)) {
-            $this->content[] = $content;
-            $content->addCategoryId($this);
+        $this->post->clear();
+        $this->post = new ArrayCollection($Post);
+    }
+
+    /**
+     * Add a Post in the category.
+     *
+     * @param $Post Post The Post to associate
+     */
+    public function addPost($Post)
+    {
+        if ($this->post->contains($Post)) {
+            return;
         }
 
-        return $this;
+        $this->post->add($Post);
+        $Post->addCategory($this);
     }
 
-    public function removeContent(Contents $content): self
+    /**
+     * @param Post $Post
+     */
+    public function removePost($Post)
     {
-        if ($this->content->removeElement($content)) {
-            $content->removeCategoryId($this);
+        if (!$this->post->contains($Post)) {
+            return;
         }
 
-        return $this;
+        $this->post->removeElement($Post);
+        $Post->removeCategory($this);
     }
+
 }

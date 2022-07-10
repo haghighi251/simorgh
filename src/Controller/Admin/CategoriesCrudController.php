@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use DateTime;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use App\Entity\Categories;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
@@ -85,12 +86,12 @@ class CategoriesCrudController extends AbstractCrudController {
 
     public function createEntity(string $entityFqcn) {
         $category = new Categories();
-        $category->setCreateAt(\DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s')));
+        $category->setCreateAt(DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s')));
         return $category;
     }
 
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void {
-        $entityInstance->setUpdatedAt(\DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s')));
+        $entityInstance->setUpdatedAt(DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s')));
         $entityInstance->setParent(1);
         parent::updateEntity($entityManager, $entityInstance);
     }

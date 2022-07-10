@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UsersRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -148,21 +149,21 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface {
         return $this;
     }
 
-    public function getRegisterAt(): ?\DateTimeInterface {
+    public function getRegisterAt(): ?DateTimeInterface {
         return $this->register_at;
     }
 
-    public function setRegisterAt(\DateTimeInterface $register_at): self {
+    public function setRegisterAt(DateTimeInterface $register_at): self {
         $this->register_at = $register_at;
 
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeInterface {
+    public function getUpdateAt(): ?DateTimeInterface {
         return $this->update_at;
     }
 
-    public function setUpdateAt(?\DateTimeInterface $update_at): self {
+    public function setUpdateAt(?DateTimeInterface $update_at): self {
         $this->update_at = $update_at;
 
         return $this;

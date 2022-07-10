@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,7 +36,7 @@ class ProductController extends AbstractController {
         $product->setName('Keyboard2');
         $product->setPrice(1999);
         $product->setDescription('Ergonomic and stylish!');
-        $product->setPublishAt(new \DateTime());
+        $product->setPublishAt(new DateTime());
 
         // tell Doctrine you want to (eventually) save the Product (no queries yet)
         $entityManager->persist($product);

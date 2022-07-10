@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Users;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,7 +19,7 @@ class IndexController extends AbstractController {
 
         // returns your User object, or null if the user is not authenticated
         // use inline documentation to tell your editor your exact User class
-        /** @var \App\Entity\Users $user */
+        /** @var Users $user */
         $user = $this->getUser();
         $message = $translator->trans('Symfony is great', [], 'messages', 'ir_IR');
 

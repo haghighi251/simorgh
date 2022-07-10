@@ -2,6 +2,8 @@
 // src/Entity/Task.php
 namespace App\Entity;
 
+use DateTime;
+
 class Task
 {
     protected $task;
@@ -17,12 +19,12 @@ class Task
         $this->task = $task;
     }
 
-    public function getDueDate(): ?\DateTime
+    public function getDueDate(): ?DateTime
     {
         return $this->dueDate;
     }
 
-    public function setDueDate(?\DateTime $dueDate): void
+    public function setDueDate(?DateTime $dueDate): void
     {
         $this->dueDate = $dueDate;
     }

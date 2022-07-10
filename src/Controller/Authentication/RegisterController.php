@@ -2,9 +2,11 @@
 
 namespace App\Controller\Authentication;
 
+use App\Controller\UsersController;
 use App\Entity\Users;
 use App\Form\UsersType;
 use App\Repository\UsersRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,12 +56,12 @@ class RegisterController extends AbstractController {
         // Register form submit and add new user
         if ($form->isSubmitted() && $form->isValid()) {
             // We must check if the email is unique or not.
-            if (\App\Controller\UsersController::get_user_by_email($user->getEmail(),$usersRepository) !== false) {
+            if (UsersController::get_user_by_email($user->getEmail(),$usersRepository) !== false) {
                 array_push($error, $translator->trans('email_is_not_unique', [], 'messages', $lang));
             }
             
             // We must check if the user name is unique or not.
-            if (\App\Controller\UsersController::get_user_by_email($user->getUserName(),$usersRepository) !== false) {
+            if (UsersController::get_user_by_email($user->getUserName(),$usersRepository) !== false) {
                 array_push($error, $translator->trans('user_name_is_not_unique', [], 'messages', $lang));
             }
             
@@ -83,7 +85,7 @@ class RegisterController extends AbstractController {
                 $user->setStatus(0);
 
                 // Set current time for register date field.
-                $user->setRegisterAt(\DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s')));
+                $user->setRegisterAt(DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s')));
 
                 // Set default salt for user.
                 $user->setSalt(uniqid());

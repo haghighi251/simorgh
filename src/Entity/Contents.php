@@ -3,11 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\ContentsRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Categories;
-//use App\Entity\Attachment;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -81,19 +80,12 @@ class Contents
     private $updated_at;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Categories::class, inversedBy="content")
-     */
-    private $category_id;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @var string
      */
     public $content_image;
 
     public $ShortContent;
-
-    public $Categories;
 
     public $Tags;
 
@@ -120,11 +112,17 @@ class Contents
      */
     private $attachments;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ContentsCategories::class, mappedBy="content",cascade={"persist", "remove"})
+     */
+    private $contentsCategories;
+
+
     public function __construct()
     {
         $this->comment_count = new ArrayCollection();
-        $this->category_id = new ArrayCollection();
         $this->attachments = new ArrayCollection();
+        $this->contentsCategories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -258,24 +256,24 @@ class Contents
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    public function setCreatedAt(DateTimeInterface $created_at): self
     {
         $this->created_at = $created_at;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
+    public function setUpdatedAt(?DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
 
@@ -294,53 +292,49 @@ class Contents
         return $this;
     }
 
-    /**
-     * @return Collection<int, Categories>
-     */
-    public function getCategoryId(): Collection
+    public function getTags()
     {
-        return $this->category_id;
     }
 
-    public function addCategoryId(Categories $categoryId): self
+    public function getPrice()
     {
-        if (!$this->category_id->contains($categoryId)) {
-            $this->category_id[] = $categoryId;
-        }
-
-        return $this;
     }
 
-    public function removeCategoryId(Categories $categoryId): self
+    public function getDiscountedPrice()
     {
-        $this->category_id->removeElement($categoryId);
-
-        return $this;
     }
-    
-    public function getCategories(){}
 
-    public function getTags(){}
+    public function getWeightDimension()
+    {
+    }
 
-    public function getPrice(){}
+    public function getWeight()
+    {
+    }
 
-    public function getDiscountedPrice(){}
+    public function getLengthDimension()
+    {
+    }
 
-    public function getWeightDimension(){}
+    public function getLength()
+    {
+    }
 
-    public function getWeight(){}
+    public function getStockStatus()
+    {
+    }
 
-    public function getLengthDimension(){}
+    public function getProductCount()
+    {
+    }
 
-    public function getLength(){}
+    public function getNote()
+    {
+    }
 
-    public function getStockStatus(){}
-
-    public function getProductCount(){}
-
-    public function getNote(){}
-
-    public function getShortContent(){}
+    public function getShortContent()
+    {
+    }
 
     /**
      * @return Collection<int, Attachment>
@@ -366,6 +360,48 @@ class Contents
             // set the owning side to null (unless already changed)
             if ($attachment->getContents() === $this) {
                 $attachment->setContents(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public $Categories;
+
+    public function getCategories()
+    {
+        return $this->Categories;
+    }
+
+    public function setCategories($category)
+    {
+        $this->Categories = $category;
+    }
+
+    /**
+     * @return Collection<int, ContentsCategories>
+     */
+    public function getContentsCategories(): Collection
+    {
+        return $this->contentsCategories;
+    }
+
+    public function addContentsCategory(ContentsCategories $contentsCategory): self
+    {
+        if (!$this->contentsCategories->contains($contentsCategory)) {
+            $this->contentsCategories[] = $contentsCategory;
+            $contentsCategory->setContent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContentsCategory(ContentsCategories $contentsCategory): self
+    {
+        if ($this->contentsCategories->removeElement($contentsCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($contentsCategory->getContent() === $this) {
+                $contentsCategory->setContent(null);
             }
         }
 
