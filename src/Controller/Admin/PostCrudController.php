@@ -14,7 +14,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 
 class PostCrudController extends AbstractCrudController
 {
@@ -36,6 +37,10 @@ class PostCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        if ($pageName == Crud::PAGE_EDIT) {
+            $postRepository = new PostRepository($this->em);
+            $postMetaRepository = new PostMetaRepository($this->em);
+        }
         return [
             TextField::new('title'),
             TextEditorField::new('description'),
@@ -49,10 +54,11 @@ class PostCrudController extends AbstractCrudController
         ];
     }
 
-    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance) :void {
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
         $entityInstance->setPrice($entityInstance->Price);
         $entityInstance->setColor($entityInstance->color);
-        if(null !== $entityInstance->id){
+        if (null !== $entityInstance->id) {
             $postRepository = new PostMetaRepository($this->em);
             $postRepository->update([
                 'post_id' => $entityInstance->id,
@@ -67,6 +73,20 @@ class PostCrudController extends AbstractCrudController
         }
 
         parent::updateEntity($entityManager, $entityInstance);
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->setPermission(Action::NEW, 'ROLE_ADMIN')
+            ->setPermission(Action::DELETE, 'ROLE_EDITOR')
+            ->setPermission(Action::DETAIL, 'ROLE_EDITOR')
+            ->setPermission(Action::EDIT, 'ROLE_ADMIN')
+            ->setPermission(Action::BATCH_DELETE, 'ROLE_EDITOR')
+            ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action)
+            {
+                return $action->setLabel('title')->setIcon('fa fa-star');
+            });
     }
 
 }

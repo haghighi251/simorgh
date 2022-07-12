@@ -78,9 +78,6 @@ class ContentsCrudController extends AbstractCrudController
             }
         }
 
-        if ($pageName == Crud::PAGE_EDIT) {
-        }
-
         return [
             FormField::addPanel('Content Details'),
 
@@ -202,16 +199,6 @@ class ContentsCrudController extends AbstractCrudController
 
             return $content;
         }
-    }
-
-    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance) :void {
-        //$entityInstance->setCa
-dd($entityInstance);
-        parent::updateEntity($entityManager, $entityInstance);
-    }
-
-    private function updateCategory($entityInstance){
-
     }
 
 }

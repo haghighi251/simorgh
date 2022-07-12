@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\PostMetaRepository;
 use App\Repository\PostRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -203,6 +204,17 @@ class Post
      */
     public function getPrice()
     {
+        if (null !== $this->id) {
+            $postMeta = new PostMeta();
+            $postMeta->setPost($this);
+            dd($postMeta);
+            $postMetaRepository = new PostMetaRepository(parent()->em);
+            $price = $postMetaRepository->findOneBy([
+                'post_id'   =>$this->getId(),
+                'meta_key' => 'price',
+            ]);
+            $this->setPrice($price);
+        }
         return $this->Price;
     }
 
