@@ -78,4 +78,16 @@ class ContentsCategories
     public function setCategory($Category): void{
         $this->Category = $Category;
     }
+
+    public function getCategoryId(): ?int
+    {
+        return $this->category_id;
+    }
+
+    public function setCategoryId(int $category_id): self
+    {
+        $this->category_id = $category_id;
+
+        return $this;
+    }
 }

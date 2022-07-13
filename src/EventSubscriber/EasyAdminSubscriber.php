@@ -25,7 +25,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             AfterEntityBuiltEvent::class => ['AfterEntityBuiltEvent'],
             AfterEntityDeletedEvent::class => ['AfterEntityDeletedEvent'],
             AfterEntityPersistedEvent::class => ['AfterEntityPersistedEvent'],
-            AfterEntityUpdatedEvent::class => ['AfterEntityUpdatedEvent'],
+           // AfterEntityUpdatedEvent::class => ['AfterEntityUpdatedEvent'],
             BeforeEntityDeletedEvent::class => ['BeforeEntityDeletedEvent'],
 //            BeforeEntityPersistedEvent::class => ['BeforeEntityPersistedEvent'],
             AfterCrudActionEvent::class => ['AfterCrudActionEvent'],

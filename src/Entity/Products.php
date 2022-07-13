@@ -24,7 +24,7 @@ class Products
     /**
      * @ORM\Column(type="integer")
      */
-    private $author_id;
+    public $author_id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -39,7 +39,7 @@ class Products
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $image;
+    private $imageFile;
 
     /**
      * @ORM\Column(type="string", length=10)
@@ -64,7 +64,7 @@ class Products
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $priceOnSale;
+    private $discountedPrice;
 
     /**
      * @ORM\Column(type="integer")
@@ -87,21 +87,57 @@ class Products
     private $updatedAt;
 
     /**
-     * @var Categories[]
-     * @ORM\ManyToMany(targetEntity="Categories", inversedBy="product")
-     * @ORM\JoinTable(name="products_categories")
+     * @ORM\Column(type="string", length=150)
      */
-    public $categories;
+    private $ShortContent;
+
+    /**
+     * @ORM\Column(type="string", length=10, nullable=true)
+     */
+    private $comment_status;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private $stockStatus;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $productCount;
+
+    /**
+     * @ORM\Column(type="string", length=1000, nullable=true)
+     */
+    private $note;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $extraJsonData;
 
     /**
      * @ORM\OneToMany(targetEntity=Attachment::class, mappedBy="products",cascade={"persist", "remove"})
      */
     private $attachments;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Categories::class, inversedBy="products")
+     * @ORM\JoinTable(name="products_categories")
+     */
+    private $categories;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Categories::class, inversedBy="products_tags")
+     * @ORM\JoinTable(name="products_tags")
+     */
+    private $tags;
+
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
         $this->attachments = new ArrayCollection();
+        $this->categories = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -145,14 +181,14 @@ class Products
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getImageFile(): ?string
     {
-        return $this->image;
+        return $this->imageFile;
     }
 
-    public function setImage(?string $image): self
+    public function setImageFile(?string $imageFile): self
     {
-        $this->image = $image;
+        $this->imageFile = $imageFile;
 
         return $this;
     }
@@ -205,14 +241,14 @@ class Products
         return $this;
     }
 
-    public function getPriceOnSale(): ?int
+    public function getDiscountedPrice(): ?int
     {
-        return $this->priceOnSale;
+        return $this->discountedPrice;
     }
 
-    public function setPriceOnSale(?int $priceOnSale): self
+    public function setDiscountedPrice(?int $discountedPrice): self
     {
-        $this->priceOnSale = $priceOnSale;
+        $this->discountedPrice = $discountedPrice;
 
         return $this;
     }
@@ -265,37 +301,6 @@ class Products
         return $this;
     }
 
-    /**
-     * Add a category in the product association.
-     * (Owning side).
-     *
-     * @param $category Categories the category to associate
-     */
-    public function addCategory($category)
-    {
-        if ($this->categories->contains($category)) {
-            return;
-        }
-
-        $this->categories->add($category);
-        $category->addProduct($this);
-    }
-
-    /**
-     * Remove a category in the product association.
-     * (Owning side).
-     *
-     * @param $category Categories the category to associate
-     */
-    public function removeCategory($category)
-    {
-        if (!$this->categories->contains($category)) {
-            return;
-        }
-
-        $this->categories->removeElement($category);
-        $category->removeProduct($this);
-    }
 
     /**
      * @return Collection<int, Attachment>
@@ -309,7 +314,7 @@ class Products
     {
         if (!$this->attachments->contains($attachment)) {
             $this->attachments[] = $attachment;
-            $attachment->setContents($this);
+            $attachment->setProducts($this);
         }
 
         return $this;
@@ -323,6 +328,128 @@ class Products
                 $attachment->setProducts(null);
             }
         }
+
+        return $this;
+    }
+
+
+
+    public function getShortContent(): ?string
+    {
+        return $this->ShortContent;
+    }
+
+    public function setShortContent(string $ShortContent): self
+    {
+        $this->ShortContent = $ShortContent;
+
+        return $this;
+    }
+
+    public function getCommentStatus(): ?string
+    {
+        return $this->comment_status;
+    }
+
+    public function setCommentStatus(?string $comment_status): self
+    {
+        $this->comment_status = $comment_status;
+
+        return $this;
+    }
+
+    public function getStockStatus(): ?string
+    {
+        return $this->stockStatus;
+    }
+
+    public function setStockStatus(string $stockStatus): self
+    {
+        $this->stockStatus = $stockStatus;
+
+        return $this;
+    }
+
+    public function getProductCount(): ?int
+    {
+        return $this->productCount;
+    }
+
+    public function setProductCount(int $productCount): self
+    {
+        $this->productCount = $productCount;
+
+        return $this;
+    }
+
+    public function getNote(): ?string
+    {
+        return $this->note;
+    }
+
+    public function setNote(?string $note): self
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    public function getExtraJsonData(): ?string
+    {
+        return $this->extraJsonData;
+    }
+
+    public function setExtraJsonData(?string $extraJsonData): self
+    {
+        $this->extraJsonData = $extraJsonData;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, categories>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(categories $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(categories $category): self
+    {
+        $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Categories>
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Categories $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Categories $tag): self
+    {
+        $this->tags->removeElement($tag);
 
         return $this;
     }

@@ -107,10 +107,10 @@ class Contents
 
     public $Note;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Attachment::class, mappedBy="contents",cascade={"persist", "remove"})
-     */
-    private $attachments;
+//    /**
+//     * @ORM\OneToMany(targetEntity=Attachment::class, mappedBy="contents",cascade={"persist", "remove"})
+//     */
+//    private $attachments;
 
     /**
      * @ORM\OneToMany(targetEntity=ContentsCategories::class, mappedBy="content",cascade={"persist", "remove"})
@@ -121,7 +121,7 @@ class Contents
     public function __construct()
     {
         $this->comment_count = new ArrayCollection();
-        $this->attachments = new ArrayCollection();
+       // $this->attachments = new ArrayCollection();
         $this->contentsCategories = new ArrayCollection();
     }
 
@@ -404,6 +404,18 @@ class Contents
                 $contentsCategory->setContent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getContentImage(): ?string
+    {
+        return $this->content_image;
+    }
+
+    public function setContentImage(?string $content_image): self
+    {
+        $this->content_image = $content_image;
 
         return $this;
     }

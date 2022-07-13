@@ -11,8 +11,8 @@ use App\Entity\Comments;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use App\Entity\Contents;
 use App\Entity\Categories;
-use App\Entity\Post;
 use App\Entity\Products;
+use App\Entity\Settings;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -39,11 +39,11 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linktoRoute('Back to the website', 'fas fa-home', 'admin');
-        yield MenuItem::linkToCrud('Comments', 'fas fa-comments', Comments::class);
-        yield MenuItem::linkToCrud('Contents', 'fas fa-comments', Contents::class);
+        yield MenuItem::linkToCrud('Products', 'fa fa-solid fa-store', Products::class);
+        yield MenuItem::linkToCrud('Contents', 'fas fa-globe', Contents::class);
         yield MenuItem::linkToCrud('Categories', 'fa fa-solid fa-layer-group', Categories::class);
-        yield MenuItem::linkToCrud('Post', 'fa fa-solid fa-layer-group', Post::class);
-        yield MenuItem::linkToCrud('Products', 'fa fa-solid fa-layer-group', Products::class);
+        yield MenuItem::linkToCrud('Comments', 'fas fa-comments', Comments::class);
+        yield MenuItem::linkToCrud('Settings', 'fa fa-solid fa-gears', Settings::class);
 
     }
 

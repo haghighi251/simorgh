@@ -21,6 +21,11 @@ class Attachment
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Products::class, inversedBy="attachments")
+     */
+    private $products;
+
+    /**
      * @ORM\Column(type="string", length=200)
      */
     private $image;
@@ -35,24 +40,21 @@ class Attachment
      */
     private $updated_at;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Products::class, inversedBy="attachments")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $products;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Contents::class, inversedBy="attachments")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $contents;
+//    /**
+//     * @ORM\ManyToOne(targetEntity=Contents::class, inversedBy="attachments")
+//     * @ORM\JoinColumn(nullable=false)
+//     */
+//    private $contents;
 
     /**
      * @Vich\UploadableField(mapping="attachments", fileNameProperty="image")
      */
     private $imageFile;
 
-
+    public function __construct(){
+        $this->created_at = new \DateTime();
+        $this->updated_at = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -95,7 +97,7 @@ class Attachment
         return $this;
     }
 
-    public function getContents(): ?Contents
+   /* public function getContents(): ?Contents
     {
         return $this->contents;
     }
@@ -105,12 +107,7 @@ class Attachment
         $this->contents = $contents;
 
         return $this;
-    }
-
-    public function __construct(){
-        $this->created_at = new \DateTime();
-        $this->updated_at = new \DateTime();
-    }
+    }*/
 
     /**
      * @return mixed

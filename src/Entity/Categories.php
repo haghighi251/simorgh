@@ -62,23 +62,20 @@ class Categories
     private $updated_at;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Post::class, mappedBy="categories")
-     *
+     * @ORM\ManyToMany(targetEntity=Products::class, mappedBy="categories")
      */
-    private $post;
+    private $products;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Products::class, mappedBy="categories")
-     *
+     * @ORM\ManyToMany(targetEntity=Products::class, mappedBy="tags")
      */
-    private $product;
+    private $products_tags;
 
 
     public function __construct()
     {
-        // $this->contents = new ArrayCollection();
-        $this->post = new ArrayCollection();
-        $this->product = new ArrayCollection();
+        $this->products = new ArrayCollection();
+        $this->products_tags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -188,102 +185,57 @@ class Categories
     }
 
     /**
-     * Return all Post associated to the category.
-     *
-     * @return Post[]
+     * @return Collection<int, Products>
      */
-    public function getPost()
+    public function getProducts(): Collection
     {
-        return $this->post;
+        return $this->products;
     }
 
-    /**
-     * Set all Post in the category.
-     *
-     * @param Post[] $Post
-     */
-    public function setPosts($Post)
+    public function addProduct(Products $product): self
     {
-        $this->post->clear();
-        $this->post = new ArrayCollection($Post);
-    }
-
-    /**
-     * Add a Post in the category.
-     *
-     * @param $Post Post The Post to associate
-     */
-    public function addPost($Post)
-    {
-        if ($this->post->contains($Post)) {
-            return;
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->addCategory($this);
         }
 
-        $this->post->add($Post);
-        $Post->addCategory($this);
+        return $this;
     }
 
-    /**
-     * @param Post $Post
-     */
-    public function removePost($Post)
+    public function removeProduct(Products $product): self
     {
-        if (!$this->post->contains($Post)) {
-            return;
+        if ($this->products->removeElement($product)) {
+            $product->removeCategory($this);
         }
 
-        $this->post->removeElement($Post);
-        $Post->removeCategory($this);
-    }
-
-
-    /**
-     * Return all Products associated to the category.
-     *
-     * @return Products[]
-     */
-    public function getProduct()
-    {
-        return $this->product;
+        return $this;
     }
 
     /**
-     * Set all Products in the category.
-     *
-     * @param Products[] $Product
+     * @return Collection<int, Products>
      */
-    public function setProduct($Product)
+    public function getProductsTags(): Collection
     {
-        $this->product->clear();
-        $this->product = new ArrayCollection($Product);
+        return $this->products_tags;
     }
 
-    /**
-     * Add a Products in the category.
-     *
-     * @param $product Products The Products to associate
-     */
-    public function addProduct($Product)
+    public function addProductsTag(Products $productsTag): self
     {
-        if ($this->product->contains($Product)) {
-            return;
+        if (!$this->products_tags->contains($productsTag)) {
+            $this->products_tags[] = $productsTag;
+            $productsTag->addTag($this);
         }
 
-        $this->product->add($Product);
-        $Product->addCategory($this);
+        return $this;
     }
 
-    /**
-     * @param Products $Product
-     */
-    public function removeProduct($Product)
+    public function removeProductsTag(Products $productsTag): self
     {
-        if (!$this->product->contains($Product)) {
-            return;
+        if ($this->products_tags->removeElement($productsTag)) {
+            $productsTag->removeTag($this);
         }
 
-        $this->product->removeElement($Product);
-        $Product->removeCategory($this);
+        return $this;
     }
 
 }

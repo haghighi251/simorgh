@@ -2,32 +2,32 @@
 
 namespace App\Repository;
 
-use App\Entity\Meta;
+use App\Entity\Settings;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Meta>
+ * @extends ServiceEntityRepository<Settings>
  *
- * @method Meta|null find($id, $lockMode = null, $lockVersion = null)
- * @method Meta|null findOneBy(array $criteria, array $orderBy = null)
- * @method Meta[]    findAll()
- * @method Meta[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Settings|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Settings|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Settings[]    findAll()
+ * @method Settings[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MetaRepository extends ServiceEntityRepository
+class SettingsRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Meta::class);
+        parent::__construct($registry, Settings::class);
     }
 
     /**
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add(Meta $entity, bool $flush = true): void
+    public function add(Settings $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
         if ($flush) {
@@ -39,7 +39,7 @@ class MetaRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(Meta $entity, bool $flush = true): void
+    public function remove(Settings $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
         if ($flush) {
@@ -48,15 +48,15 @@ class MetaRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Meta[] Returns an array of Meta objects
+    //  * @return Settings[] Returns an array of Settings objects
     //  */
     /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.exampleField = :val')
             ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
+            ->orderBy('s.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
@@ -65,10 +65,10 @@ class MetaRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Meta
+    public function findOneBySomeField($value): ?Settings
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
