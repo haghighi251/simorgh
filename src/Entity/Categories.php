@@ -67,11 +67,18 @@ class Categories
      */
     private $post;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Products::class, mappedBy="categories")
+     *
+     */
+    private $product;
+
 
     public function __construct()
     {
-       // $this->contents = new ArrayCollection();
+        // $this->contents = new ArrayCollection();
         $this->post = new ArrayCollection();
+        $this->product = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -180,8 +187,6 @@ class Categories
         return $this->name;
     }
 
-
-
     /**
      * Return all Post associated to the category.
      *
@@ -229,6 +234,56 @@ class Categories
 
         $this->post->removeElement($Post);
         $Post->removeCategory($this);
+    }
+
+
+    /**
+     * Return all Products associated to the category.
+     *
+     * @return Products[]
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    /**
+     * Set all Products in the category.
+     *
+     * @param Products[] $Product
+     */
+    public function setProduct($Product)
+    {
+        $this->product->clear();
+        $this->product = new ArrayCollection($Product);
+    }
+
+    /**
+     * Add a Products in the category.
+     *
+     * @param $product Products The Products to associate
+     */
+    public function addProduct($Product)
+    {
+        if ($this->product->contains($Product)) {
+            return;
+        }
+
+        $this->product->add($Product);
+        $Product->addCategory($this);
+    }
+
+    /**
+     * @param Products $Product
+     */
+    public function removeProduct($Product)
+    {
+        if (!$this->product->contains($Product)) {
+            return;
+        }
+
+        $this->product->removeElement($Product);
+        $Product->removeCategory($this);
     }
 
 }

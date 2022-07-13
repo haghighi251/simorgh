@@ -20,9 +20,11 @@ class PostMeta
 
     /**
      * @ORM\ManyToOne(targetEntity=post::class, inversedBy="postMetas")
+     * @ORM\JoinColumn(name="post_id", referencedColumnName="id")
      * @ORM\JoinColumn(nullable=false)
      */
     private $post;
+
 
     /**
      * @ORM\Column(type="string", length=100)

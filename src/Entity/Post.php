@@ -2,20 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\PostMetaRepository;
 use App\Repository\PostRepository;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Controller\PostController;
-use Doctrine\Persistence\ManagerRegistry;
-use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Doctrine\ORM\Mapping as ORM;
 
 
 /**
- * @ORM\Entity(repositoryClass=PostRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
  */
 class Post
 {
@@ -62,10 +56,13 @@ class Post
      */
     private $postMetas;
 
-
+    /**
+     *
+     */
     public $Price;
 
     public $color;
+
 
     public function __construct()
     {
@@ -205,15 +202,16 @@ class Post
     public function getPrice()
     {
         if (null !== $this->id) {
+            dd($this);
             $postMeta = new PostMeta();
             $postMeta->setPost($this);
-            dd($postMeta);
-            $postMetaRepository = new PostMetaRepository(parent()->em);
-            $price = $postMetaRepository->findOneBy([
-                'post_id'   =>$this->getId(),
-                'meta_key' => 'price',
-            ]);
-            $this->setPrice($price);
+            dd($this->getPostMetas());
+//            $postMetaRepository = new PostMetaRepository($this->entityManager);
+//            $price = $postMetaRepository->findOneBy([
+//                'post_id' => $this->getId(),
+//                'meta_key' => 'price',
+//            ]);
+            $this->setPrice(50);
         }
         return $this->Price;
     }

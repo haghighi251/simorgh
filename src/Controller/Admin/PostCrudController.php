@@ -50,7 +50,8 @@ class PostCrudController extends AbstractCrudController
                 ->setCurrency('USD')
                 ->setStoredAsCents()
                 ->hideOnIndex(),
-            TextField::new('color'),
+            TextField::new('color')
+                ->hideOnIndex(),
         ];
     }
 

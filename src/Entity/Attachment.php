@@ -36,6 +36,12 @@ class Attachment
     private $updated_at;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Products::class, inversedBy="attachments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $products;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Contents::class, inversedBy="attachments")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -45,6 +51,8 @@ class Attachment
      * @Vich\UploadableField(mapping="attachments", fileNameProperty="image")
      */
     private $imageFile;
+
+
 
     public function getId(): ?int
     {
@@ -120,5 +128,17 @@ class Attachment
         if($imageFile){
             $this->updated_at = new \DateTime();
         }
+    }
+
+    public function getProducts(): ?Products
+    {
+        return $this->products;
+    }
+
+    public function setProducts(?Products $products): self
+    {
+        $this->products = $products;
+
+        return $this;
     }
 }

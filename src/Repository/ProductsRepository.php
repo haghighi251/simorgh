@@ -2,39 +2,32 @@
 
 namespace App\Repository;
 
-use App\Entity\Post;
+use App\Entity\Products;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
-use phpDocumentor\Reflection\Types\True_;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @extends ServiceEntityRepository<Post>
+ * @extends ServiceEntityRepository<Products>
  *
- * @method Post|null find($id, $lockMode = null, $lockVersion = null)
- * @method Post|null findOneBy(array $criteria, array $orderBy = null)
- * @method Post[]    findAll()
- * @method Post[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Products|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Products|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Products[]    findAll()
+ * @method Products[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PostRepository extends ServiceEntityRepository
+class ProductsRepository extends ServiceEntityRepository
 {
-    /**
-     * It's used as an instance to work with ManagerRegistry .
-     * @var type
-     */
-    private $em;
-
     public function __construct(ManagerRegistry $registry)
     {
-        $this->em = $registry;
-        parent::__construct($registry, Post::class);
+        parent::__construct($registry, Products::class);
     }
 
     /**
+     * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add(Post $entity, bool $flush = true): void
+    public function add(Products $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
         if ($flush) {
@@ -42,11 +35,11 @@ class PostRepository extends ServiceEntityRepository
         }
     }
 
-
     /**
+     * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(Post $entity, bool $flush = true): void
+    public function remove(Products $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
         if ($flush) {
@@ -55,7 +48,7 @@ class PostRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Post[] Returns an array of Post objects
+    //  * @return Products[] Returns an array of Products objects
     //  */
     /*
     public function findByExampleField($value)
@@ -72,7 +65,7 @@ class PostRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Post
+    public function findOneBySomeField($value): ?Products
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.exampleField = :val')

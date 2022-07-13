@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use App\Entity\Contents;
 use App\Entity\Categories;
 use App\Entity\Post;
+use App\Entity\Products;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -42,6 +43,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Contents', 'fas fa-comments', Contents::class);
         yield MenuItem::linkToCrud('Categories', 'fa fa-solid fa-layer-group', Categories::class);
         yield MenuItem::linkToCrud('Post', 'fa fa-solid fa-layer-group', Post::class);
+        yield MenuItem::linkToCrud('Products', 'fa fa-solid fa-layer-group', Products::class);
 
     }
 
