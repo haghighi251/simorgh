@@ -39,7 +39,7 @@ class Products
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $imageFile;
+    public $imageFile;
 
     /**
      * @ORM\Column(type="string", length=10)
@@ -49,7 +49,7 @@ class Products
     /**
      * @ORM\Column(type="string", length=150)
      */
-    private $slug;
+    public $slug;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
