@@ -8,28 +8,66 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Products;
 use Doctrine\Persistence\ManagerRegistry;
-//use App\Repository\ProductsRepository;
+use App\Entity\Users;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Form\ProductsType;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ProductController extends AbstractController {
+class ProductController extends AbstractController
+{
+
+    public function __construct()
+    {
+    }
+
+    /**
+     * @param TranslatorInterface $translatorInterface
+     * @param ManagerRegistry $manager_registry
+     * @return Response
+     * @Route("/product/{slug}", name="product_show_by_slug")
+     */
+    public function product_show_by_slug(
+        TranslatorInterface $translatorInterface,
+        ManagerRegistry     $manager_registry,
+        string              $slug
+    ): Response
+    {
+        $message = "";
+        $product = $manager_registry->getRepository(Products::class)->findOneBy(['slug' => $slug]);
+
+        if (!$product) {
+            throw $this->createNotFoundException('Product not found.');
+        }
+
+        // use inline documentation to tell your editor your exact User class
+        /** @var Users $user */
+        $user = $this->getUser();
+
+        return $this->render('product/index.html.twig', [
+            'controller_name' => 'ProductController',
+            'FirstName' => $user->getFirstName(),
+            'message' => $message,
+            'body_class_name' => '',
+            'product' => $product,
+        ]);
+    }
 
     /**
      * @Route("/product", name="app_product")
      */
-    public function index(SessionInterface $session): Response {
-
+    public function index(SessionInterface $session): Response
+    {
         return $this->render('product/index.html.twig', [
-                    'controller_name' => 'ProductController',
-                    'session' => $session->get('email'),
+            'controller_name' => 'ProductController',
+            'session' => $session->get('email'),
         ]);
     }
 
     /**
      * @Route("/product/add", name="create_product")
      */
-    public function createProduct(ManagerRegistry $doctrine): Response {
+    public function createProduct(ManagerRegistry $doctrine): Response
+    {
         $entityManager = $doctrine->getManager();
 
         $product = new Products();
@@ -47,34 +85,12 @@ class ProductController extends AbstractController {
         return new Response('Saved new product with id ' . $product->getId());
     }
 
-    /**
-     * @Route("/product/{id}", name="product_show")
-     */
-    public function show(ManagerRegistry $doctrine, int $id): Response {
-        $product = $doctrine->getRepository(Products::class)->find($id);
-
-        if (!$product) {
-            throw $this->createNotFoundException('Not found product id: ' . $id);
-        }
-
-        return new Response('Product title is: ' . $product->getName());
-    }
-
-    /**
-     * @Route("/product_show/{id}", name="product_show2")
-     */
-    public function show2(Products $product): Response {
-        if (!$product) {
-            throw $this->createNotFoundException('Not found product id: ' . $id);
-        }
-
-        return new Response('Product title is: ' . $product->getName());
-    }
 
     /**
      * @Route("/product/edit/{id}",name="product_update")
      */
-    public function update(ManagerRegistry $doctrine, int $id): Response {
+    public function update(ManagerRegistry $doctrine, int $id): Response
+    {
         $entityManager = $doctrine->getManager();
         $product = $doctrine->getRepository(Products::class)->find($id);
 
@@ -89,7 +105,8 @@ class ProductController extends AbstractController {
     /**
      * @Route("/product/remove/{id}")
      */
-    public function Remove(ManagerRegistry $doctrine, int $id): Response {
+    public function Remove(ManagerRegistry $doctrine, int $id): Response
+    {
         $entityManager = $doctrine->getManager();
         $product = $doctrine->getRepository(Products::class)->find($id);
 
@@ -104,11 +121,12 @@ class ProductController extends AbstractController {
     /**
      * @Route("/product/html/form",name="product_form")
      */
-    public function form() {
+    public function form()
+    {
         $product = new Products();
         $form = $this->createForm(ProductsType::class, $product);
         return $this->renderForm('product/form.html.twig', [
-                    'form' => $form,
+            'form' => $form,
         ]);
     }
 

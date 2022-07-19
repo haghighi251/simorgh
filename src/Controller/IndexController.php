@@ -22,7 +22,7 @@ class IndexController extends AbstractController
             try {
                 $this->site_settings = $managerRegistry
                     ->getRepository(Settings::class)
-                    ->findOneBy(['id'=>1]);
+                    ->findOneBy(['id' => 1]);
                 dd($this->site_settings);
             } catch (Exception $error) {
                 throw($error);
@@ -58,7 +58,7 @@ class IndexController extends AbstractController
             'FirstName' => $user->getFirstName(),
             'message' => $message,
             'body_class_name' => '',
-            'products'=>$products,
+            'products' => $products,
         ]);
     }
 

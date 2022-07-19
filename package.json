@@ -12,6 +12,7 @@
     "name": "Amir-haghighi",
     "email": "haghighi251@gmail.com",
     "devDependencies": {
+        "@fortawesome/fontawesome-free": "^6.1.1",
         "@popperjs/core": "^2.11.5",
         "@symfony/webpack-encore": "^2.1.0",
         "bootstrap": "^5.1.3",

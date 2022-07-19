@@ -1,6 +1,8 @@
 import '../scss/app.scss';
 import '../styles/carousel.css';
 import '../bootstrap';
+require('@fortawesome/fontawesome-free/css/all.min.css');
+require('@fortawesome/fontawesome-free/js/all.js');
 
 // app.js
 const $ = require('jquery');
