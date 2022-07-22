@@ -133,6 +133,13 @@ class Products
      */
     private $tags;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $featured;
+
+    public $rate;
+
     public function __construct()
     {
         $this->attachments = new ArrayCollection();
@@ -453,5 +460,35 @@ class Products
 
         return $this;
     }
+
+    public function getFeatured(): ?bool
+    {
+        return $this->featured;
+    }
+
+    public function setFeatured(bool $featured): self
+    {
+        $this->featured = $featured;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRate()
+    {
+        return 10;
+    }
+
+    /**
+     * @param mixed $rate
+     */
+    public function setRate($rate): void
+    {
+        $this->rate = 5;
+    }
+
+
 
 }

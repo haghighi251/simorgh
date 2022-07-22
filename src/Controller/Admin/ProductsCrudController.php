@@ -22,6 +22,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 
 class ProductsCrudController extends AbstractCrudController
 {
@@ -74,8 +75,8 @@ class ProductsCrudController extends AbstractCrudController
             TextEditorField::new('content', 'Long Content'),
 
             ImageField::new('image_file', 'Product Image')
-                ->setUploadDir('/public/uploads/images')
-                ->setBasePath('/uploads/images')
+                ->setUploadDir('/public/uploads/images/products')
+                ->setBasePath('/uploads/images/products')
                 ->setUploadedFileNamePattern('[slug]-[contenthash].[extension]'),
 
             CollectionField::new('attachments', 'More Images')
@@ -88,7 +89,8 @@ class ProductsCrudController extends AbstractCrudController
                 ->onlyOnDetail(),
 
             AssociationField::new('categories'),
-            AssociationField::new('tags'),
+            AssociationField::new('tags')
+            ->hideOnIndex(),
 
             FormField::addPanel('Product Settings'),
 
@@ -110,12 +112,12 @@ class ProductsCrudController extends AbstractCrudController
 
             MoneyField::new('Price', 'Regular Price')
                 ->setCurrency('USD')
-                ->setStoredAsCents()
+                ->setStoredAsCents(false)
                 ->hideOnIndex(),
 
             MoneyField::new('discounted_price', 'Discounted Price')
                 ->setCurrency('USD')
-                ->setStoredAsCents()
+                ->setStoredAsCents(false)
                 ->hideOnIndex(),
 
             NumberField::new('tax', 'Tax (Just put number. For example 10 for 10% of tax.)')
@@ -132,6 +134,8 @@ class ProductsCrudController extends AbstractCrudController
 
             TextEditorField::new('Note', 'Note')
                 ->hideOnIndex(),
+
+            BooleanField::new('featured')->renderAsSwitch(true),
 
         ];
     }

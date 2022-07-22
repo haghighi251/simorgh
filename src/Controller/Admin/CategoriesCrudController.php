@@ -5,13 +5,13 @@ namespace App\Controller\Admin;
 use DateTime;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use App\Entity\Categories;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use App\Repository\CategoriesRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -33,19 +33,11 @@ class CategoriesCrudController extends AbstractCrudController {
         return Categories::class;
     }
 
-    /*
-      public function configureFields(string $pageName): iterable
-      {
-      return [
-      IdField::new('id'),
-      TextField::new('title'),
-      TextEditorField::new('description'),
-      ];
-      }
-     */
-
     public function configureFields(string $pageName): iterable {
+        // Getting an instance from Category entity class to have access to this class.
         $categories_repository = $this->em->getRepository(Categories::class);
+
+        // Making a list of categories that are parents of other categories.
         $parent_array = [];
         $categories = $categories_repository->getAllparent();
         if (count($categories) > 0) {
@@ -56,11 +48,20 @@ class CategoriesCrudController extends AbstractCrudController {
 
         return [
             TextField::new('name'),
+            SlugField::new('slug', 'Slug')
+                ->setTargetFieldName('name')
+                ->setUnlockConfirmationMessage(
+                    'It is highly recommended to use the automatic slugs, but you can customize them.'
+                ),
             TextEditorField::new('description'),
             ChoiceField::new('type')->setChoices(['shop' => 'shop', 'blog' => 'blog', 'tag' => 'tag']),
             ChoiceField::new('parent')->setChoices($parent_array),
             ChoiceField::new('level')->setChoices(['Root' => 1, 'Child' => 2, 'Sub Child' => 3]),
-            TextField::new('slug'),
+            ImageField::new('image', 'Image')
+                ->setUploadDir('/public/uploads/images/categories')
+                ->setBasePath('/uploads/images/categories')
+                ->setUploadedFileNamePattern('[slug]-[contenthash].[extension]'),
+            BooleanField::new('featured')->renderAsSwitch(true)
         ];
     }
 
@@ -70,7 +71,7 @@ class CategoriesCrudController extends AbstractCrudController {
                         ->setPaginatorPageSize(20);
     }
     
-     public function configureActions(Actions $actions): Actions
+    public function configureActions(Actions $actions): Actions
     {
         return $actions
             ->setPermission(Action::NEW, 'ROLE_ADMIN')
@@ -80,7 +81,7 @@ class CategoriesCrudController extends AbstractCrudController {
             ->setPermission(Action::BATCH_DELETE, 'ROLE_ADMIN')
             ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action)
             {
-                return $action->setLabel('Borrow')->setIcon('fa fa-star');
+                return $action->setLabel('Edit')->setIcon('fa fa-edit');
             });
     }
 

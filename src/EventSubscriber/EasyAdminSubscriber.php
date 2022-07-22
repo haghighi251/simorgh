@@ -20,15 +20,15 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            BeforeCrudActionEvent::class => ['BeforeCrudActionEvent'],
-            BeforeEntityUpdatedEvent::class => ['BeforeEntityUpdatedEvent'],
-            AfterEntityBuiltEvent::class => ['AfterEntityBuiltEvent'],
-            AfterEntityDeletedEvent::class => ['AfterEntityDeletedEvent'],
-            AfterEntityPersistedEvent::class => ['AfterEntityPersistedEvent'],
-           // AfterEntityUpdatedEvent::class => ['AfterEntityUpdatedEvent'],
-            BeforeEntityDeletedEvent::class => ['BeforeEntityDeletedEvent'],
-//            BeforeEntityPersistedEvent::class => ['BeforeEntityPersistedEvent'],
-            AfterCrudActionEvent::class => ['AfterCrudActionEvent'],
+//            BeforeCrudActionEvent::class => ['BeforeCrudActionEvent'],
+//            BeforeEntityUpdatedEvent::class => ['BeforeEntityUpdatedEvent'],
+//            AfterEntityBuiltEvent::class => ['AfterEntityBuiltEvent'],
+//            AfterEntityDeletedEvent::class => ['AfterEntityDeletedEvent'],
+//            AfterEntityPersistedEvent::class => ['AfterEntityPersistedEvent'],
+//           // AfterEntityUpdatedEvent::class => ['AfterEntityUpdatedEvent'],
+//            BeforeEntityDeletedEvent::class => ['BeforeEntityDeletedEvent'],
+////            BeforeEntityPersistedEvent::class => ['BeforeEntityPersistedEvent'],
+//            AfterCrudActionEvent::class => ['AfterCrudActionEvent'],
         ];
     }
 

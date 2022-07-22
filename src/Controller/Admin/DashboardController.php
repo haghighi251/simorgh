@@ -13,6 +13,7 @@ use App\Entity\Contents;
 use App\Entity\Categories;
 use App\Entity\Products;
 use App\Entity\Settings;
+use App\Entity\Sliders;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -44,7 +45,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Categories', 'fa fa-solid fa-layer-group', Categories::class);
         yield MenuItem::linkToCrud('Comments', 'fas fa-comments', Comments::class);
         yield MenuItem::linkToCrud('Settings', 'fa fa-solid fa-gears', Settings::class);
-
+        yield MenuItem::linkToCrud('Sliders', 'fa fa-solid fa-images', Sliders::class);
     }
 
 }

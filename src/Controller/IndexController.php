@@ -11,6 +11,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Products;
 use App\Entity\Settings;
+use App\Entity\Sliders;
+use App\Entity\Categories;
 
 class IndexController extends AbstractController
 {
@@ -44,6 +46,15 @@ class IndexController extends AbstractController
         $user = $this->getUser();
         $message = $translator->trans('Symfony is great', [], 'messages', 'ir_IR');
 
+        // Getting the sliders that are active and published before now.
+        $sliders = $manager_registry->getRepository(Sliders::class)
+            ->findByActiveSliders();
+
+        // Getting featured categories.
+        $categories = $manager_registry->getRepository(Categories::class)
+            ->findBy(['featured'=>true],array(),3,0);
+
+        // Getting the products
         $products = $manager_registry->
         getRepository(Products::class)
             ->findBy(
@@ -58,6 +69,8 @@ class IndexController extends AbstractController
             'FirstName' => $user->getFirstName(),
             'message' => $message,
             'body_class_name' => '',
+            'sliders'=>$sliders,
+            'categories'=>$categories,
             'products' => $products,
         ]);
     }
