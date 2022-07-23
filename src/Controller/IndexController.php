@@ -18,18 +18,11 @@ class IndexController extends AbstractController
 {
     private $site_settings;
 
-    public function __construct()
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        $this->site_settings = function (ManagerRegistry $managerRegistry) {
-            try {
-                $this->site_settings = $managerRegistry
-                    ->getRepository(Settings::class)
-                    ->findOneBy(['id' => 1]);
-                dd($this->site_settings);
-            } catch (Exception $error) {
-                throw($error);
-            }
-        };
+        $this->site_settings = $managerRegistry
+            ->getRepository(Settings::class)
+            ->findOneBy(['id' => 1]);
     }
 
     /**
@@ -69,6 +62,7 @@ class IndexController extends AbstractController
             'FirstName' => $user->getFirstName(),
             'message' => $message,
             'body_class_name' => '',
+            'site_settings'=>$this->site_settings,
             'sliders'=>$sliders,
             'categories'=>$categories,
             'products' => $products,

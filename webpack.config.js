@@ -23,6 +23,7 @@ Encore
     .addEntry('app', './assets/js/app.js')
     .addEntry('bootstrap', 'bootstrap')
     .addEntry('jquery-migrate-1.2.1.min', './assets/js/components/jquery-migrate-1.2.1.min.js')
+    .addEntry('product-single','./assets/js/product-single-top.js')
     //.addStyleEntry('font-awesome', './assets/styles/app.css')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
@@ -74,7 +75,7 @@ Encore
     // uncomment if you're having problems with a jQuery plugin
     .autoProvidejQuery()
     .autoProvideVariables({
-        $: 'jQuery',
+        $: 'jquery',
         jQuery: 'jQuery',
         'window.jQuery': 'jQuery'
     })

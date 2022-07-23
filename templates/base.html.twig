@@ -2,12 +2,12 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{{ site_settings.siteTitle }}{% endblock %}</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
+        <meta name="description" content="{{ site_settings.SiteDescription }}">
         <meta name="author" content="Amir Haghighi">
-        <meta name="generator" content="Symfony shop">
+        <meta name="generator" content="{{ site_settings.siteTitle }}">
 
         <link rel="apple-touch-icon" href="{{ asset('build/images/logo.png') }}">
         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('build/images/logo.png') }}">
@@ -50,8 +50,8 @@
     <nav class="navbar navbar-expand-lg navbar-light shadow">
         <div class="container d-flex justify-content-between align-items-center">
 
-            <a class="navbar-brand text-success logo h1 align-self-center" href="index.html">
-                Zay
+            <a class="navbar-brand text-success logo h1 align-self-center" href="{{ path('app_index') }}">
+                {{ site_settings.siteTitle }}
             </a>
 
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

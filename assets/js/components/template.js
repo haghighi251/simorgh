@@ -8,7 +8,6 @@ https://templatemo.com/tm-559-zay-shop
 
 'use strict';
 $(document).ready(function() {
-
     // Accordion
     var all_panels = $('.templatemo-accordion > li > ul').hide();
 

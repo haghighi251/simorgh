@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Settings;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,8 +17,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ProductController extends AbstractController
 {
 
-    public function __construct()
+    private $site_settings;
+
+    public function __construct(ManagerRegistry $managerRegistry)
     {
+        $this->site_settings = $managerRegistry
+            ->getRepository(Settings::class)
+            ->findOneBy(['id' => 1]);
     }
 
     /**
@@ -44,6 +50,7 @@ class ProductController extends AbstractController
         $user = $this->getUser();
 
         return $this->render('product/index.html.twig', [
+            'site_settings'=>$this->site_settings,
             'controller_name' => 'ProductController',
             'FirstName' => $user->getFirstName(),
             'message' => $message,
